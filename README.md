@@ -1,6 +1,6 @@
-# Yield Protocol Vault v2
+# T-Bills
 
-The Yield Protocol Vault v2 is a Collateralized Debt Engine for zero-coupon bonds, loosely integrated with [YieldSpace Automated Market Makers](https://yield.is/Yield.pdf), as described by Dan Robinson and Allan Niemerg.
+A collateralized debt vault that issues tokenized, synthetic treasury bills on FX.   
 
 ## Smart Contracts
 
