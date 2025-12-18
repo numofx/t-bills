@@ -1,6 +1,6 @@
-# T-Bills
+# Manager
 
-A collateralized debt vault that issues tokenized, synthetic treasury bills on FX.   
+A collateralized debt vault that issues tokenized, synthetic treasury bills on ERC-20 based foreign currencies.
 
 ## Smart Contracts
 
