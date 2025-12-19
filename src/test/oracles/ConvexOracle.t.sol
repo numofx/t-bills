@@ -12,8 +12,10 @@ import { ICurvePool } from "../../oracles/convex/ICurvePool.sol";
 import { ERC20Mock } from "../../mocks/ERC20Mock.sol";
 import { TestConstants } from "../utils/TestConstants.sol";
 import { TestExtensions } from "../utils/TestExtensions.sol";
+import { ChainHelpers } from "../utils/Chain.sol";
 
 contract ConvexOracleTest is Test, TestConstants, TestExtensions {
+
     Cvx3CrvOracle public convexOracle;
     ChainlinkMultiOracle public chainlinkMultiOracle;
     CompositeMultiOracle public compositeMultiOracle;
@@ -46,7 +48,12 @@ contract ConvexOracleTest is Test, TestConstants, TestExtensions {
     }
 
     function setUpMock() public {
-        vm.createSelectFork(MAINNET, 15044600);
+        // Skip on Celo: depends on Ethereum mainnet Curve & Convex infrastructure
+        if (ChainHelpers.isCelo()) {
+            return;
+            return;
+        }
+        vm.createSelectFork(CELO, 15044600);
 
         convexOracle = new Cvx3CrvOracle();
         chainlinkMultiOracle = new ChainlinkMultiOracle();
@@ -110,7 +117,7 @@ contract ConvexOracleTest is Test, TestConstants, TestExtensions {
     }
 
     function setUpHarness() public {
-        string memory rpc = vm.envOr(RPC, MAINNET);
+        string memory rpc = vm.envOr(RPC, CELO);
         vm.createSelectFork(rpc);
 
         convexOracle = Cvx3CrvOracle(0x52e860327bCc464014259A7cD16DaA5763d7Dc99);

@@ -7,10 +7,10 @@ ARBITRUM_BASES=(\
     ["0x303200000000"]="0xCbB7Eba13F9E1d97B2138F588f5CA2F5167F06cc"
 )
 
-MAINNET_ORACLE="0x95750d6F5fba4ed1cc4Dc42D2c01dFD3DB9a11eC"
+CELO_ORACLE="0x95750d6F5fba4ed1cc4Dc42D2c01dFD3DB9a11eC"
 
 # June 23 series fyTokens
-MAINNET_BASES=(\
+CELO_BASES=(\
     ["0x303000000000"]="0x124c9F7E97235Fe3E35820f95D10aFfCe4bE9168"
     ["0x303100000000"]="0x9ca4D6fbE0Ba91d553e74805d2E2545b04AbEfEA"
     ["0x303200000000"]="0x667f185407C4CAb52aeb681f0006e4642d8091DF"
@@ -18,16 +18,16 @@ MAINNET_BASES=(\
 )
 
 export CI=false
-export RPC="MAINNET"
-export NETWORK="MAINNET"
+export RPC="CELO"
+export NETWORK="CELO"
 export MOCK=false
 
-for base in ${!MAINNET_BASES[@]}; do
-    echo     "Accumulator Oracle: " $MAINNET_ORACLE
+for base in ${!CELO_BASES[@]}; do
+    echo     "Accumulator Oracle: " $CELO_ORACLE
     printf   "Base:                %x\n" $base
-    echo     "Address:            " ${MAINNET_BASES[$base]}
-    ORACLE=$MAINNET_ORACLE \
+    echo     "Address:            " ${CELO_BASES[$base]}
+    ORACLE=$CELO_ORACLE \
     BASE=$(printf "%x" $base) \
-    ADDRESS=${MAINNET_BASES[$base]} \
+    ADDRESS=${CELO_BASES[$base]} \
     forge test -c contracts/test/oracles/AccumulatorOracle.t.sol
 done 

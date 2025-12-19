@@ -4,6 +4,7 @@ pragma solidity >=0.8.13;
 import "forge-std/src/Test.sol";
 import "../utils/Mocks.sol";
 import "../utils/TestConstants.sol";
+import "../utils/Chain.sol";
 
 import "@yield-protocol/yieldspace-tv/src/interfaces/IPool.sol";
 import "@yield-protocol/yieldspace-tv/src/oracle/PoolOracle.sol";
@@ -12,6 +13,7 @@ import "../../interfaces/ILadle.sol";
 import "../../oracles/yieldspace/YieldSpaceMultiOracle.sol";
 
 contract YieldSpaceMultiOracleUSDCIntegrationTest is Test, TestConstants {
+
     ILadle public ladle = ILadle(0x6cB18fF2A33e981D1e38A663Ca056c0a5265066A);
 
     IPoolOracle internal pOracle;
@@ -19,7 +21,12 @@ contract YieldSpaceMultiOracleUSDCIntegrationTest is Test, TestConstants {
     IPool internal pool;
 
     function setUp() public {
-        vm.createSelectFork(MAINNET, 15313316);
+        // Skip on Celo: depends on Ethereum-only Ladle deployment & USDC pools
+        if (ChainHelpers.isCelo()) {
+            return;
+            return;
+        }
+        vm.createSelectFork(CELO, 15313316);
 
         pOracle = new PoolOracle(24 hours, 24, 5 minutes);
         oracle = new YieldSpaceMultiOracle(pOracle);

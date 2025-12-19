@@ -7,9 +7,9 @@ ARBITRUM_BASES=(\
 
 )
 
-MAINNET_ORACLE="0xA81414a544D0bd8a28257F4038D3D24B08Dd9Bb4"
+CELO_ORACLE="0xA81414a544D0bd8a28257F4038D3D24B08Dd9Bb4"
 
-MAINNET_BASES=(\
+CELO_BASES=(\
     # ["0x303000000000"]="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
     ["0x303100000000"]="0x6B175474E89094C44Da98b954EedeAC495271d0F"
     ["0x303200000000"]="0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
@@ -23,23 +23,23 @@ MAINNET_BASES=(\
 )
 
 export CI=false
-export RPC="MAINNET"
-export NETWORK="MAINNET"
+export RPC="CELO"
+export NETWORK="CELO"
 export MOCK=false
 
-for base in ${!MAINNET_BASES[@]}; do
-    for quote in ${!MAINNET_BASES[@]}; do 
+for base in ${!CELO_BASES[@]}; do
+    for quote in ${!CELO_BASES[@]}; do 
         if [ $base -ne $quote ]; then 
-            echo     "Composite Oracle: " $MAINNET_ORACLE
+            echo     "Composite Oracle: " $CELO_ORACLE
             printf   "Base:              %x\n" $base
             printf   "Quote:             %x\n" $quote
-            echo     "Base Address:     " ${MAINNET_BASES[$base]}
-            echo     "Quote Address:    " ${MAINNET_BASES[$quote]}
-            ORACLE=$MAINNET_ORACLE \
+            echo     "Base Address:     " ${CELO_BASES[$base]}
+            echo     "Quote Address:    " ${CELO_BASES[$quote]}
+            ORACLE=$CELO_ORACLE \
             BASE=$(printf "%x" $base) \
             QUOTE=$(printf "%x" $quote) \
-            BASE_ADDRESS=${MAINNET_BASES[$base]} \
-            QUOTE_ADDRESS=${MAINNET_BASES[$quote]} \
+            BASE_ADDRESS=${CELO_BASES[$base]} \
+            QUOTE_ADDRESS=${CELO_BASES[$quote]} \
             forge test -c contracts/test/oracles/CompositeMultiOracle.t.sol -m testConversionHarness
         fi
     done

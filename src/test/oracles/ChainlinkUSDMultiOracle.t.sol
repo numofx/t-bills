@@ -11,8 +11,10 @@ import { ChainlinkAggregatorV3MockEx } from "../../mocks/oracles/chainlink/Chain
 import { ERC20Mock } from "../../mocks/ERC20Mock.sol";
 import { TestConstants } from "../utils/TestConstants.sol";
 import { TestExtensions } from "../utils/TestExtensions.sol";
+import { ChainHelpers } from "../utils/Chain.sol";
 
 contract ChainlinkUSDMultiOracleTest is Test, TestConstants, TestExtensions {
+
     ChainlinkUSDMultiOracle public oracleL1;
     ChainlinkL2USDMultiOracle public oracleL2;
     FlagsInterfaceMock public flagsL2;
@@ -40,7 +42,12 @@ contract ChainlinkUSDMultiOracleTest is Test, TestConstants, TestExtensions {
     }
 
     function setUpMock() public {
-        vm.createSelectFork(MAINNET, 15044600);
+        // Skip on Celo: depends on Ethereum mainnet Chainlink aggregators
+        if (ChainHelpers.isCelo()) {
+            return;
+            return;
+        }
+        vm.createSelectFork(CELO, 15044600);
 
         oracleL1 = new ChainlinkUSDMultiOracle();
         flagsL2 = new FlagsInterfaceMock();
@@ -52,7 +59,7 @@ contract ChainlinkUSDMultiOracleTest is Test, TestConstants, TestExtensions {
     }
 
     function setUpHarness() public {
-        string memory rpc = vm.envOr(RPC, MAINNET);
+        string memory rpc = vm.envOr(RPC, CELO);
         vm.createSelectFork(rpc);
 
         oracleL2 = ChainlinkL2USDMultiOracle(vm.envAddress("ORACLE"));

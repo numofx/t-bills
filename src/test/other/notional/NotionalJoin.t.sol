@@ -7,6 +7,7 @@ import "forge-std/src/console2.sol";
 import "../../../test/utils/TestConstants.sol";
 import "../../../test/utils/TestExtensions.sol";
 import "../../../test/utils/Mocks.sol";
+import "../../../test/utils/Chain.sol";
 import "../../../mocks/ERC20Mock.sol";
 
 import { ILadle } from "../../../interfaces/ILadle.sol";
@@ -19,8 +20,9 @@ import "./NotionalTypes.sol";
 using stdStorage for StdStorage;
 
 abstract contract StateZero is Test, TestConstants, TestExtensions {
-    Join public underlyingJoin; 
-    NotionalJoin public njoin; 
+
+    Join public underlyingJoin;
+    NotionalJoin public njoin;
     address timelock = 0x3b870db67a45611CF4723d44487EAF398fAc51E3;
     Notional public notional = Notional(0x1344A36A1B56144C3Bc62E7757377D288fDE0369);
     ERC1155 public fCash = ERC1155(0x1344A36A1B56144C3Bc62E7757377D288fDE0369);
@@ -99,7 +101,12 @@ abstract contract StateZero is Test, TestConstants, TestExtensions {
     }
 
     function setUp() public virtual {
-        vm.createSelectFork(MAINNET, 16017869);
+        // Skip on Celo: depends on Ethereum mainnet Notional, WETH, DAI, USDC contracts
+        if (ChainHelpers.isCelo()) {
+            return;
+            return;
+        }
+        vm.createSelectFork(CELO, 16017869);
         
         // arbitrary values for testing
         fCashTokens = 10e18;

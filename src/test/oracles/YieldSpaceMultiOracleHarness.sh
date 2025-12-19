@@ -1,29 +1,29 @@
-MAINNET_ORACLE="0x210F4e1942bEEc4038743A8f885B870E0c27b414"
+CELO_ORACLE="0x210F4e1942bEEc4038743A8f885B870E0c27b414"
 
 ARBITRUM_ORACLE="0xb958bA862D70C0a4bD0ea976f9a1907686dd41e2"
 
-MAINNET_BASES=(\
+CELO_BASES=(\
     "0x303000000000"
     "0x303100000000"
     "0x303200000000"
     "0x313800000000"
 )
 
-MAINNET_BASE_ADDRESSES=(\
+CELO_BASE_ADDRESSES=(\
     "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
     "0x6B175474E89094C44Da98b954EedeAC495271d0F"
     "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
     "0x853d955aCEf822Db058eb8505911ED77F175b99e"
 )
 
-MAINNET_FYTOKENS=(\
+CELO_FYTOKENS=(\
     "0x303030390000"
     "0x303130390000"
     "0x303230390000"
     "0x313830390000"
 )
 
-MAINNET_FYTOKEN_ADDRESSES=(\
+CELO_FYTOKEN_ADDRESSES=(\
     "0x0FBd5ca8eE61ec921B3F61B707f1D7D64456d2d1"
     "0x79A6Be1Ae54153AA6Fc7e4795272c63F63B2a6DC"
     "0x22E1e5337C5BA769e98d732518b2128dE14b553C"
@@ -67,21 +67,21 @@ ARBITRUM_FYTOKEN_ADDRESSES=(\
 )
 
 export CI=false
-export RPC="MAINNET"
-export NETWORK="MAINNET"
+export RPC="CELO"
+export NETWORK="CELO"
 export MOCK=false
 
 
 for i in {0..3}; do
-    echo     "YieldSpace Oracle:   " $MAINNET_ORACLE
-    printf   "Base:                 %x\n" ${MAINNET_BASES[$i]}
-    printf   "Quote:                %x\n" ${MAINNET_FYTOKENS[$i]}``
-    echo     "Base Address:        " ${MAINNET_BASE_ADDRESSES[$i]}
-    echo     "Quote Address:       " ${MAINNET_FYTOKEN_ADDRESSES[$i]}
-    ORACLE=$MAINNET_ORACLE \
-    BASE=$(printf "%x" ${MAINNET_BASES[$i]}) \
-    QUOTE=$(printf "%x" ${MAINNET_FYTOKENS[$i]}) \
-    BASE_ADDRESS=${MAINNET_BASE_ADDRESSES[$i]} \
-    QUOTE_ADDRESS=${MAINNET_FYTOKEN_ADDRESSES[$i]} \
+    echo     "YieldSpace Oracle:   " $CELO_ORACLE
+    printf   "Base:                 %x\n" ${CELO_BASES[$i]}
+    printf   "Quote:                %x\n" ${CELO_FYTOKENS[$i]}``
+    echo     "Base Address:        " ${CELO_BASE_ADDRESSES[$i]}
+    echo     "Quote Address:       " ${CELO_FYTOKEN_ADDRESSES[$i]}
+    ORACLE=$CELO_ORACLE \
+    BASE=$(printf "%x" ${CELO_BASES[$i]}) \
+    QUOTE=$(printf "%x" ${CELO_FYTOKENS[$i]}) \
+    BASE_ADDRESS=${CELO_BASE_ADDRESSES[$i]} \
+    QUOTE_ADDRESS=${CELO_FYTOKEN_ADDRESSES[$i]} \
     forge test -c contracts/test/oracles/StrategyOracle.t.sol -m testConversionHarness
 done

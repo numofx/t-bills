@@ -42,17 +42,20 @@ abstract contract ZeroState is Test, TestConstants, TestExtensions {
         ladle = ILadle(address(3));
 
         mockOracle = new CTokenChiMock();
-        mockOracle.set(220434062002504964823286680); 
+        mockOracle.set(220434062002504964823286680);
 
         token = IERC20(address(new ERC20Mock("", "")));
         bytes6 mockIlkId = 0x000000000001;
         join = new Join(address(token));
 
+        // Use dynamic maturity: 90 days from now, safe for any fork timestamp
+        uint256 maturity = block.timestamp + 90 days;
+
         fyToken = new FYToken(
             mockIlkId,
             IOracle(address(mockOracle)),
             join,
-            1719583200,
+            maturity,
             "",
             ""
         );
@@ -72,7 +75,7 @@ abstract contract ZeroState is Test, TestConstants, TestExtensions {
     }
 
     function setUp() public virtual {
-        string memory rpc = vm.envOr(RPC, MAINNET);
+        string memory rpc = vm.envOr(RPC, CELO);
         vm.createSelectFork(rpc);
         string memory network = vm.envOr(NETWORK, LOCALHOST);
 

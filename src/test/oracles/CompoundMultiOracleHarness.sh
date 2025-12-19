@@ -1,8 +1,8 @@
-MAINNET_ORACLE=(\
+CELO_ORACLE=(\
     "0x53FBa816BD69a7f2a096f58687f87dd3020d0d5c"\
 )
 
-MAINNET_BASES=(\
+CELO_BASES=(\
     ["0x303000000000"]="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
     ["0x303100000000"]="0x6B175474E89094C44Da98b954EedeAC495271d0F"
     ["0x303200000000"]="0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
@@ -10,16 +10,16 @@ MAINNET_BASES=(\
 )
 
 export CI=false
-export RPC="MAINNET"
-export NETWORK="MAINNET"
+export RPC="CELO"
+export NETWORK="CELO"
 export MOCK=false
 
-for base in ${!MAINNET_BASES[@]}; do
-    echo     "Compound Oracle: " $MAINNET_ORACLE
+for base in ${!CELO_BASES[@]}; do
+    echo     "Compound Oracle: " $CELO_ORACLE
     printf   "Base:             %x\n" $base
-    echo     "Address:         " ${MAINNET_BASES[$base]}
-    ORACLE=$MAINNET_ORACLE \
+    echo     "Address:         " ${CELO_BASES[$base]}
+    ORACLE=$CELO_ORACLE \
     BASE=$(printf "%x" $base) \
-    BASE_ADDRESS=${MAINNET_BASES[$base]} \
+    BASE_ADDRESS=${CELO_BASES[$base]} \
     forge test -c contracts/test/oracles/CompoundMultiOracle.t.sol -m testConversionHarness
 done 

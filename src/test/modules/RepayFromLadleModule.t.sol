@@ -14,8 +14,10 @@ import {WETH9Mock}              from "../../mocks/WETH9Mock.sol";
 import {RepayFromLadleModule }  from "../../modules/RepayFromLadleModule.sol";
 import {TestConstants}          from "../utils/TestConstants.sol";
 import {TestExtensions}         from "../utils/TestExtensions.sol";
+import {ChainHelpers}                  from "../utils/Chain.sol";
 
 abstract contract ZeroTest is Test, TestConstants, TestExtensions {
+
     ICauldron public cauldron = ICauldron(0xc88191F8cb8e6D4a668B047c1C8503432c3Ca867);
     ILadle public ladle = ILadle(0x6cB18fF2A33e981D1e38A663Ca056c0a5265066A);
     IWETH9 public weth;
@@ -36,7 +38,12 @@ abstract contract ZeroTest is Test, TestConstants, TestExtensions {
     address public bar = address(2);
 
     function setUp() public virtual {
-        vm.createSelectFork(MAINNET, 15266900);
+        // Skip on Celo: depends on Ethereum mainnet DAI/USDC/fyDAI contracts & Ladle infrastructure
+        if (ChainHelpers.isCelo()) {
+            return;
+            return;
+        }
+        vm.createSelectFork(CELO, 15266900);
         // deployments
         wethMock = new WETH9Mock();
         weth = IWETH9(address(wethMock));

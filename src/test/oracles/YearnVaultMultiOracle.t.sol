@@ -54,7 +54,7 @@ contract YearnVaultMultiOracleTest is Test, TestConstants, AccessControl {
     }
 
     function setUpHarness() public {
-        string memory rpc = vm.envOr(RPC, MAINNET);
+        string memory rpc = vm.envOr(RPC, CELO);
         vm.createSelectFork(rpc);
 
         yearnVaultMultiOracle = YearnVaultMultiOracle(vm.envAddress("ORACLE"));

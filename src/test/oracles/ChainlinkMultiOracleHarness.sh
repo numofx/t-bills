@@ -1,10 +1,10 @@
-MAINNET_ORACLE="0xcDCe5C87f691058B61f3A65913f1a3cBCbAd9F52"
+CELO_ORACLE="0xcDCe5C87f691058B61f3A65913f1a3cBCbAd9F52"
 
-MAINNET_BASE="0x303000000000"
+CELO_BASE="0x303000000000"
 
-MAINNET_BASE_ADDRESS="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+CELO_BASE_ADDRESS="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
 
-MAINNET_QUOTES=(\
+CELO_QUOTES=(\
     ["0x303100000000"]="0x6B175474E89094C44Da98b954EedeAC495271d0F"
     ["0x303200000000"]="0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
     ["0x303300000000"]="0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
@@ -15,20 +15,20 @@ MAINNET_QUOTES=(\
 )
 
 export CI=false
-export RPC="MAINNET"
-export NETWORK="MAINNET"
+export RPC="CELO"
+export NETWORK="CELO"
 export MOCK=false
 
-for quote in ${!MAINNET_QUOTES[@]}; do 
-    echo     "Oracle:         " $MAINNET_ORACLE
-    printf   "Base:            %x\n" $MAINNET_BASE
+for quote in ${!CELO_QUOTES[@]}; do
+    echo     "Oracle:         " $CELO_ORACLE
+    printf   "Base:            %x\n" $CELO_BASE
     printf   "Quote:           %x\n" $quote
-    echo     "Base Address:   " ${MAINNET_BASE_ADDRESS}
-    echo     "Quote Address:  " ${MAINNET_QUOTES[$quote]}
-    ORACLE=$MAINNET_ORACLE \
-    BASE=$(printf "%x" $MAINNET_BASE) \
+    echo     "Base Address:   " ${CELO_BASE_ADDRESS}
+    echo     "Quote Address:  " ${CELO_QUOTES[$quote]}
+    ORACLE=$CELO_ORACLE \
+    BASE=$(printf "%x" $CELO_BASE) \
     QUOTE=$(printf "%x" $quote) \
-    BASE_ADDRESS=${MAINNET_BASE_ADDRESS} \
-    QUOTE_ADDRESS=${MAINNET_QUOTES[$quote]} \
+    BASE_ADDRESS=${CELO_BASE_ADDRESS} \
+    QUOTE_ADDRESS=${CELO_QUOTES[$quote]} \
     forge test -c contracts/test/oracles/ChainlinkMultiOracle.t.sol -m testConversionHarness
 done

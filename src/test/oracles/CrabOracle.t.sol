@@ -10,8 +10,10 @@ import { ICrabStrategy } from "../../oracles/crab/CrabOracle.sol";
 import { UniswapV3Oracle } from "../../oracles/uniswap/UniswapV3Oracle.sol";
 import { ERC20Mock } from "../../mocks/ERC20Mock.sol";
 import { TestConstants } from "../utils/TestConstants.sol";
+import { ChainHelpers } from "../utils/Chain.sol";
 
 contract CrabOracleTest is Test, TestConstants {
+
     CrabOracle public crabOracle;
     UniswapV3Oracle uniswapV3Oracle;
     address uniswapV3oSQTHPool = 0x82c427AdFDf2d245Ec51D8046b41c4ee87F0d29C;
@@ -35,7 +37,12 @@ contract CrabOracleTest is Test, TestConstants {
     }
 
     function setUpMock() public {
-        vm.createSelectFork(MAINNET, 15974678);
+        // Skip on Celo: depends on Ethereum mainnet Crab Strategy & Uniswap pools
+        if (ChainHelpers.isCelo()) {
+            return;
+            return;
+        }
+        vm.createSelectFork(CELO, 15974678);
 
         uniswapV3Oracle = UniswapV3Oracle(0x358538ea4F52Ac15C551f88C701696f6d9b38F3C);
 
@@ -54,7 +61,7 @@ contract CrabOracleTest is Test, TestConstants {
     }
 
     function setUpHarness() public {
-        string memory rpc = vm.envOr(RPC, MAINNET);
+        string memory rpc = vm.envOr(RPC, CELO);
         vm.createSelectFork(rpc);
 
         crabOracle = CrabOracle(vm.envAddress("ORACLE"));

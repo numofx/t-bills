@@ -52,11 +52,14 @@ abstract contract ZeroState is Test, TestConstants, TestExtensions {
         bytes6 mockIlkId = 0x000000000001;
         join = new Join(address(token));
 
+        // Use dynamic maturity: 90 days from now, safe for any fork timestamp
+        uint256 maturity = block.timestamp + 90 days;
+
         fyToken = new FYToken(
             mockIlkId,
             oracle,
             join,
-            1719583200,
+            maturity,
             "",
             ""
         );
@@ -81,7 +84,7 @@ abstract contract ZeroState is Test, TestConstants, TestExtensions {
     } 
 
     function setUp() public virtual {
-        string memory rpc = vm.envOr(RPC, MAINNET);
+        string memory rpc = vm.envOr(RPC, CELO);
         vm.createSelectFork(rpc);
         string memory network = vm.envOr(NETWORK, LOCALHOST);
 

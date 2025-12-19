@@ -8,6 +8,7 @@ import "../../oracles/VariableInterestRateOracle.sol";
 import "../../variable/interfaces/IVRCauldron.sol";
 import "../utils/TestConstants.sol";
 import "../utils/Mocks.sol";
+import "../utils/Chain.sol";
 
 abstract contract ZeroState is Test, TestConstants {
     using Math for uint256;
@@ -130,7 +131,12 @@ abstract contract ZeroState is Test, TestConstants {
     }
 
     function setUpHarness(string memory network) public {
-        vm.createSelectFork(MAINNET, 16877055);
+        // Skip on Celo: depends on Ethereum mainnet USDC & Join contracts
+        if (ChainHelpers.isCelo()) {
+            return;
+            return;
+        }
+        vm.createSelectFork(CELO, 16877055);
         ethJoin = IJoin(0x3bDb887Dc46ec0E964Df89fFE2980db0121f0fD0);
         daiJoin = IJoin(0x4fE92119CDf873Cf8826F4E6EcfD4E578E3D44Dc);
         usdcJoin = IJoin(0x0d9A1A773be5a83eEbda23bf98efB8585C3ae4f4);

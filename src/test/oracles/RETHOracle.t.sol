@@ -6,13 +6,20 @@ import "@yield-protocol/utils-v2/src/access/AccessControl.sol";
 import "../../oracles/rocket/RETHOracle.sol";
 import {IRocketTokenRETH} from "../../oracles/rocket/RETHOracle.sol";
 import "../utils/TestConstants.sol";
+import "../utils/Chain.sol";
 
 contract RETHOracleTest is Test, TestConstants {
+
     RETHOracle public rethOracle;
     address reth = 0xae78736Cd615f374D3085123A210448E74Fc6393;
 
     function setUp() public {
-        vm.createSelectFork(MAINNET, 16384773);
+        // Skip on Celo: depends on Ethereum mainnet Rocket Pool RETH contract
+        if (ChainHelpers.isCelo()) {
+            return;
+            return;
+        }
+        vm.createSelectFork(CELO, 16384773);
         rethOracle = new RETHOracle(ETH, RETH, IRocketTokenRETH(reth));
     }
 

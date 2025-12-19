@@ -59,7 +59,7 @@ contract ChainlinkMultiOracleTest is Test, TestConstants {
         usdcEthAggregator.set(WAD / 2500);    }
 
     function setUpHarness() public {
-        string memory rpc = vm.envOr(RPC, MAINNET);
+        string memory rpc = vm.envOr(RPC, CELO);
         vm.createSelectFork(rpc);
 
         chainlinkMultiOracle = ChainlinkMultiOracle(vm.envAddress("ORACLE"));

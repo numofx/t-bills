@@ -1,6 +1,6 @@
-MAINNET_ORACLE="0x3EA4618cE652eaB330F00935FD075F5Cb614e689"
+CELO_ORACLE="0x3EA4618cE652eaB330F00935FD075F5Cb614e689"
 
-MAINNET_BASES=(\
+CELO_BASES=(\
     "0x303000000000"
     "0x303000000000"
     "0x303100000000"
@@ -9,7 +9,7 @@ MAINNET_BASES=(\
     "0x303200000000"
 )
 
-MAINNET_BASE_ADDRESSES=(\
+CELO_BASE_ADDRESSES=(\
     "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
     "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
     "0x6B175474E89094C44Da98b954EedeAC495271d0F"
@@ -18,7 +18,7 @@ MAINNET_BASE_ADDRESSES=(\
     "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
 )
 
-MAINNET_STRATEGIES=(\
+CELO_STRATEGIES=(\
     "0x333400000000"
     "0x333500000000"
     "0x333000000000"
@@ -27,7 +27,7 @@ MAINNET_STRATEGIES=(\
     "0x333300000000"
 )
 
-MAINNET_STRATEGY_ADDRESSES=(\
+CELO_STRATEGY_ADDRESSES=(\
     "0xcf30A5A994f9aCe5832e30C138C9697cda5E1247"
     "0x831dF23f7278575BA0b136296a285600cD75d076"
     "0x7ACFe277dEd15CabA6a8Da2972b1eb93fe1e2cCD"
@@ -37,21 +37,21 @@ MAINNET_STRATEGY_ADDRESSES=(\
 )
 
 export CI=false
-export RPC="MAINNET"
-export NETWORK="MAINNET"
+export RPC="CELO"
+export NETWORK="CELO"
 export MOCK=false
 
 
 for i in {0..5}; do
-    echo     "Strategy Oracle:   " $MAINNET_ORACLE
-    printf   "Base:               %x\n" ${MAINNET_BASES[$i]}
-    printf   "Quote:              %x\n" ${MAINNET_STRATEGIES[$i]}``
-    echo     "Base Address:      " ${MAINNET_BASE_ADDRESSES[$i]}
-    echo     "Quote Address:     " ${MAINNET_STRATEGY_ADDRESSES[$i]}
-    ORACLE=$MAINNET_ORACLE \
-    BASE=$(printf "%x" ${MAINNET_BASES[$i]}) \
-    QUOTE=$(printf "%x" ${MAINNET_STRATEGIES[$i]}) \
-    BASE_ADDRESS=${MAINNET_BASE_ADDRESSES[$i]} \
-    QUOTE_ADDRESS=${MAINNET_STRATEGY_ADDRESSES[$i]} \
+    echo     "Strategy Oracle:   " $CELO_ORACLE
+    printf   "Base:               %x\n" ${CELO_BASES[$i]}
+    printf   "Quote:              %x\n" ${CELO_STRATEGIES[$i]}``
+    echo     "Base Address:      " ${CELO_BASE_ADDRESSES[$i]}
+    echo     "Quote Address:     " ${CELO_STRATEGY_ADDRESSES[$i]}
+    ORACLE=$CELO_ORACLE \
+    BASE=$(printf "%x" ${CELO_BASES[$i]}) \
+    QUOTE=$(printf "%x" ${CELO_STRATEGIES[$i]}) \
+    BASE_ADDRESS=${CELO_BASE_ADDRESSES[$i]} \
+    QUOTE_ADDRESS=${CELO_STRATEGY_ADDRESSES[$i]} \
     forge test -c contracts/test/oracles/StrategyOracle.t.sol -m testConversionHarness
 done

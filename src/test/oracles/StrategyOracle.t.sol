@@ -8,8 +8,10 @@ import { IStrategy } from "../../interfaces/IStrategy.sol";
 import { ERC20Mock } from "../../mocks/ERC20Mock.sol";
 import { TestConstants } from "../utils/TestConstants.sol";
 import { TestExtensions } from "../utils/TestExtensions.sol";
+import { ChainHelpers } from "../utils/Chain.sol";
 
 contract StrategyOracleTest is Test, TestConstants, TestExtensions {
+
     StrategyOracle public strategyOracle;
     bytes6 baseId = 0xc02aaa39b223;
     bytes6 quoteId; // = 0x1f9840a85d5a;
@@ -31,7 +33,12 @@ contract StrategyOracleTest is Test, TestConstants, TestExtensions {
     }
 
     function setUpMock() public {
-        vm.createSelectFork(MAINNET, 15917726);
+        // Skip on Celo: depends on Ethereum mainnet Strategy contract
+        if (ChainHelpers.isCelo()) {
+            return;
+            return;
+        }
+        vm.createSelectFork(CELO, 15917726);
 
         strategyOracle = new StrategyOracle();
         strategyOracle.grantRole(
@@ -46,7 +53,7 @@ contract StrategyOracleTest is Test, TestConstants, TestExtensions {
     }
 
     function setUpHarness() public {
-        string memory rpc = vm.envOr(RPC, MAINNET);
+        string memory rpc = vm.envOr(RPC, CELO);
         vm.createSelectFork(rpc);
 
         strategyOracle = StrategyOracle(vm.envAddress("ORACLE"));

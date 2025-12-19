@@ -6,8 +6,10 @@ import { UniswapV3Oracle } from "../../oracles/uniswap/UniswapV3Oracle.sol";
 import { ERC20Mock } from "../../mocks/ERC20Mock.sol";
 import { TestConstants } from "../utils/TestConstants.sol";
 import { TestExtensions } from "../utils/TestExtensions.sol";
+import { ChainHelpers } from "../utils/Chain.sol";
 
 contract UniswapOracleTest is Test, TestConstants, TestExtensions {
+
     UniswapV3Oracle public uniswapV3Oracle;
 
     bytes6 fraxId = 0x853d955acef8;
@@ -36,9 +38,14 @@ contract UniswapOracleTest is Test, TestConstants, TestExtensions {
         if (vm.envOr(MOCK, true)) return;
         _;
     }
-    
+
     function setUpMock() public {
-        vm.createSelectFork(MAINNET, 15044600);
+        // Skip on Celo: depends on Ethereum mainnet Uniswap V3 pools
+        if (ChainHelpers.isCelo()) {
+            return;
+            return;
+        }
+        vm.createSelectFork(CELO, 15044600);
 
         uniswapV3Oracle = new UniswapV3Oracle();
         
@@ -50,7 +57,7 @@ contract UniswapOracleTest is Test, TestConstants, TestExtensions {
     }
 
     function setUpHarness() public {
-        string memory rpc = vm.envOr(RPC, MAINNET);
+        string memory rpc = vm.envOr(RPC, CELO);
         vm.createSelectFork(rpc);
 
         uniswapV3Oracle = UniswapV3Oracle(vm.envAddress("ORACLE"));
