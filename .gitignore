@@ -33,3 +33,4 @@ crytic-export/
 out/
 cache/
 .env
+foundry.lock
