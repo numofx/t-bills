@@ -18,11 +18,19 @@ import "@yield-protocol/utils-v2/src/token/IERC20Metadata.sol";
  * @notice Production-ready deployment script for Yield Protocol v2 on Celo
  * @dev Deploys minimal working system: Cauldron, Ladle, Witch, Oracles, Joins, fyUSDT
  *
- * USAGE:
+ * PREFLIGHT (always run first):
+ *   source .env
+ *   # Simulation (no transactions):
+ *   forge script script/DeployMinimalCeloSystem.s.sol --rpc-url "$CELO_RPC_URL" -vvvv
+ *   # Optional: local fork via anvil:
+ *   anvil --fork-url "$CELO_RPC_URL"  # (in separate terminal)
+ *   forge script script/DeployMinimalCeloSystem.s.sol --rpc-url http://127.0.0.1:8545 -vvvv
+ *
+ * DEPLOY:
+ *   source .env
  *   forge script script/DeployMinimalCeloSystem.s.sol \
- *     --rpc-url $CELO_RPC_URL \
+ *     --rpc-url "$CELO_RPC_URL" \
  *     --broadcast \
- *     --verify \
  *     -vvvv
  *
  * REQUIRED ENV VARS:
@@ -38,6 +46,8 @@ import "@yield-protocol/utils-v2/src/token/IERC20Metadata.sol";
  *   KES_USD_RATE_FEED  - cKES/USD rate feed (default: 0xbAcEE37d31b9f022Ef5d232B9fD53F05a531c169)
  *   REVOKE_DEPLOYER    - Set to "true" to revoke deployer permissions (default: true)
  *   MATURITY           - fyUSDT maturity timestamp (default: 1 year from now)
+ *
+ * NOTE: --verify is optional and requires Celoscan API key setup
  */
 contract DeployMinimalCeloSystem is Script {
     // ========== CELO MAINNET CONSTANTS ==========

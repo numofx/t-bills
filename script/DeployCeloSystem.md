@@ -118,26 +118,34 @@ cp .env.example .env
 # Edit .env with your values
 ```
 
-### Step 2: Verify Configuration
+### Step 2: Preflight Validation
 
-**IMPORTANT**: Before deploying to mainnet, verify all addresses and parameters!
+**IMPORTANT**: Always run these validation commands before broadcasting!
 
 ```bash
-# Source environment
 source .env
 
-# Dry-run (no broadcast)
+# Preflight 1: Simulate against live RPC (no transactions)
 forge script script/DeployMinimalCeloSystem.s.sol \
-  --rpc-url $CELO_RPC_URL \
+  --rpc-url "$CELO_RPC_URL" \
+  -vvvv
+
+# Preflight 2 (optional): Local fork via anvil
+# Terminal 1:
+anvil --fork-url "$CELO_RPC_URL"
+# Terminal 2:
+forge script script/DeployMinimalCeloSystem.s.sol \
+  --rpc-url http://127.0.0.1:8545 \
   -vvvv
 ```
 
-Review the output carefully:
+Review the simulation output carefully:
 - ✅ Check all addresses are correct
 - ✅ Verify you're on Celo mainnet (chainId 42220)
 - ✅ Confirm deployer balance is sufficient
 - ✅ Review maturity date
 - ✅ Check collateralization ratio
+- ✅ No revert errors
 
 ### Step 3: Deploy (Testnet First!)
 
@@ -148,7 +156,7 @@ Review the output carefully:
 export CELO_RPC_URL="https://alfajores-forno.celo-testnet.org"
 
 forge script script/DeployMinimalCeloSystem.s.sol \
-  --rpc-url $CELO_RPC_URL \
+  --rpc-url "$CELO_RPC_URL" \
   --broadcast \
   -vvvv
 ```
@@ -158,16 +166,16 @@ forge script script/DeployMinimalCeloSystem.s.sol \
 Once testnet deployment is successful:
 
 ```bash
-# Load mainnet RPC
 source .env
 
-# Deploy and verify
+# Deploy to mainnet
 forge script script/DeployMinimalCeloSystem.s.sol \
-  --rpc-url $CELO_RPC_URL \
+  --rpc-url "$CELO_RPC_URL" \
   --broadcast \
-  --verify \
   -vvvv
 ```
+
+**Note**: Contract verification (`--verify`) is optional and requires additional setup. Only add `--verify` if you have a Celoscan API key configured.
 
 **Deployment takes ~2-3 minutes** and includes:
 1. Deploying all contracts
@@ -431,12 +439,13 @@ export FOUNDRY_ETH_RPC_TIMEOUT=300  # 5 minutes
 
 Before deploying to mainnet, validate the script thoroughly:
 
-### 1. Dry-Run Simulation (No Broadcast)
+### 1. Simulation Against Live RPC (No Transactions)
 
 ```bash
 source .env
+
 forge script script/DeployMinimalCeloSystem.s.sol \
-  --rpc-url $CELO_RPC_URL \
+  --rpc-url "$CELO_RPC_URL" \
   -vvvv
 ```
 
@@ -446,18 +455,25 @@ This simulates the deployment without broadcasting transactions. Check that:
 - Oracle returns valid prices
 - No revert errors
 
-### 2. Mainnet Fork Simulation
+### 2. Local Fork Simulation (Optional)
 
 ```bash
+source .env
+
+# Terminal 1: Start local fork
+anvil --fork-url "$CELO_RPC_URL"
+
+# Terminal 2: Run script against local fork
 forge script script/DeployMinimalCeloSystem.s.sol \
-  --fork-url $CELO_RPC_URL \
+  --rpc-url http://127.0.0.1:8545 \
   -vvvv
 ```
 
-This runs the script against a fork of mainnet state, validating:
+This runs the script against a local fork of mainnet state, validating:
 - Token contracts exist (CKES, USDT, wCELO)
 - Oracle infrastructure is accessible (SortedOracles)
 - Gas estimates are reasonable
+- Full deployment sequence works
 
 ### 3. Testnet Deployment (Alfajores)
 
@@ -465,8 +481,9 @@ If you have testnet addresses for CKES/USDT:
 
 ```bash
 export CELO_RPC_URL="https://alfajores-forno.celo-testnet.org"
+
 forge script script/DeployMinimalCeloSystem.s.sol \
-  --rpc-url $CELO_RPC_URL \
+  --rpc-url "$CELO_RPC_URL" \
   --broadcast \
   -vvvv
 ```
