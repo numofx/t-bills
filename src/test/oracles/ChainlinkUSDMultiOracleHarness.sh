@@ -26,5 +26,5 @@ for quote in ${!ARBITRUM_QUOTES[@]}; do
     QUOTE=$(printf "%x" $quote) \
     BASE_ADDRESS=${ARBITRUM_BASE_ADDRESS} \
     QUOTE_ADDRESS=${ARBITRUM_QUOTES[$quote]} \
-    forge test -c contracts/test/oracles/ChainlinkUSDMultiOracle.t.sol -m testConversionHarness
+    ./bin/test -c contracts/test/oracles/ChainlinkUSDMultiOracle.t.sol -m testConversionHarness
 done

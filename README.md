@@ -2,6 +2,8 @@
 
 A collateralized debt vault that issues tokenized, synthetic treasury bills on ERC-20 based foreign currencies.
 
+**Now deployed on Celo!** 🌴 See [CELO_MIGRATION.md](./CELO_MIGRATION.md) for migration details and deployment guide.
+
 ## Smart Contracts
 
 A longer description of the smart contracts can be found in the [Yield v2 reference](https://docs.google.com/document/d/1WBrJx_5wxK1a4N_9b6IQV70d2TyyyFxpiTfjA6PuZaQ/edit).
@@ -63,21 +65,56 @@ $ yarn coverage
 ```
 
 ### Test
-Be sure to have an `.env` file located at `packages/foundry` with the value `MAINNET_RPC=<your rpc url>` to be used for forked tests.
 
+#### Environment Setup
+Create a `.env` file with RPC URLs for both Ethereum and Celo:
+
+```bash
+ETH=https://eth-mainnet.g.alchemy.com/v2/YOUR_ETH_API_KEY
+CELO=https://celo-mainnet.g.alchemy.com/v2/YOUR_CELO_API_KEY
+PRIVATE_KEY=0x...  # For deployments
+GOVERNANCE=0x...   # Governance address
+```
+
+#### Run Tests
 Compile and test the smart contracts with [Foundry](https://getfoundry.sh/):
 
-```
-$ cd packages/foundry
-$ forge test
+```bash
+# Load environment variables
+source .env
+
+# Run all tests (fast dev profile recommended)
+./bin/test
+
+# Run only Ethereum fork tests
+./bin/test --match-path "src/test/oracles/Chainlink*.sol"
+
+# Run only Celo fork tests
+./bin/test --match-path "src/test/oracles/VariableIR*.sol"
+
+# Run specific test with verbose output
+./bin/test --match-contract MentoSpotOracleTest -vvv
 ```
 
-Additional tests can be run with Hardhat using npm or yarn:
+**Performance Tip**: Use `./bin/test` (defaults to the dev profile) for fast compilation (~1-2s instead of 120s+).
 
+See [src/test/README.md](./src/test/README.md) for comprehensive testing documentation.
+
+### Deploy
+
+#### Celo Deployment
+Deploy all contracts to Celo in one command:
+
+```bash
+source .env
+forge script script/DeployAll.s.sol \
+  --rpc-url $CELO \
+  --broadcast \
+  --verify \
+  -vvvv
 ```
-$ cd packages/hardhat
-$ npm run hardhat:test
-```
+
+For detailed deployment instructions, see [CELO_MIGRATION.md](./CELO_MIGRATION.md).
 
 ## Bug Bounty
 Yield is offering bounties for bugs disclosed to us at [security@yield.is](mailto:security@yield.is). The bounty reward is up to $500,000, depending on severity. Please include full details of the vulnerability and steps/code to reproduce. We ask that you permit us time to review and remediate any findings before public disclosure.

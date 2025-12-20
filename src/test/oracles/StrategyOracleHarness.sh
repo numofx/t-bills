@@ -53,5 +53,5 @@ for i in {0..5}; do
     QUOTE=$(printf "%x" ${CELO_STRATEGIES[$i]}) \
     BASE_ADDRESS=${CELO_BASE_ADDRESSES[$i]} \
     QUOTE_ADDRESS=${CELO_STRATEGY_ADDRESSES[$i]} \
-    forge test -c contracts/test/oracles/StrategyOracle.t.sol -m testConversionHarness
+    ./bin/test -c contracts/test/oracles/StrategyOracle.t.sol -m testConversionHarness
 done

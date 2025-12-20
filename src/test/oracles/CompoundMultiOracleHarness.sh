@@ -21,5 +21,5 @@ for base in ${!CELO_BASES[@]}; do
     ORACLE=$CELO_ORACLE \
     BASE=$(printf "%x" $base) \
     BASE_ADDRESS=${CELO_BASES[$base]} \
-    forge test -c contracts/test/oracles/CompoundMultiOracle.t.sol -m testConversionHarness
+    ./bin/test -c contracts/test/oracles/CompoundMultiOracle.t.sol -m testConversionHarness
 done 

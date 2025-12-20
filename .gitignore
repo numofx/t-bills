@@ -32,5 +32,6 @@ crytic-export/
 # Foundry
 out/
 cache/
+cache/solidity-files-cache.json
 .env
 foundry.lock

@@ -22,5 +22,5 @@ export MOCK=false
 
 for join in ${ARBITRUM_JOINS[@]}; do
     echo "Join: " $join
-    JOIN=$join forge test --match-path contracts/test/join/Join.t.sol
+    JOIN=$join ./bin/test --match-path contracts/test/join/Join.t.sol
 done

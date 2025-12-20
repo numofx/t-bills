@@ -27,5 +27,5 @@ for quote in ${!CELO_QUOTES[@]}; do
     QUOTE=$(printf "%x" $quote) \
     BASE_ADDRESS=$CELO_BASE_ADDRESS \
     QUOTE_ADDRESS=${CELO_QUOTES[$quote]} \
-    forge test -c contracts/test/oracles/UniswapOracle.t.sol -m testConversionHarness
+    ./bin/test -c contracts/test/oracles/UniswapOracle.t.sol -m testConversionHarness
 done

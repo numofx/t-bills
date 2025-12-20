@@ -83,5 +83,5 @@ for i in {0..3}; do
     QUOTE=$(printf "%x" ${CELO_FYTOKENS[$i]}) \
     BASE_ADDRESS=${CELO_BASE_ADDRESSES[$i]} \
     QUOTE_ADDRESS=${CELO_FYTOKEN_ADDRESSES[$i]} \
-    forge test -c contracts/test/oracles/StrategyOracle.t.sol -m testConversionHarness
+    ./bin/test -c contracts/test/oracles/StrategyOracle.t.sol -m testConversionHarness
 done

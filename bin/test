@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export FOUNDRY_PROFILE="${FOUNDRY_PROFILE:-dev}"
+
+if [[ -z "${ETH:-}" ]]; then
+  echo "ERROR: ETH RPC is required. Set ETH to an Ethereum mainnet RPC URL." >&2
+  exit 1
+fi
+
+needs_celo=0
+if [[ "$#" -eq 0 ]]; then
+  needs_celo=1
+else
+  for arg in "$@"; do
+    if [[ "$arg" == *VariableIR* ]] || [[ "$arg" == *tether* ]] || [[ "$arg" == *Celo* ]] || [[ "$arg" == *CELO* ]]; then
+      needs_celo=1
+      break
+    fi
+  done
+fi
+
+if [[ "$needs_celo" -eq 1 && -z "${CELO:-}" ]]; then
+  echo "ERROR: CELO RPC is required for Celo fork tests. Set CELO to a Celo mainnet RPC URL." >&2
+  exit 1
+fi
+
+exec forge test "$@"

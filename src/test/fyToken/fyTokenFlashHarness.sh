@@ -19,5 +19,5 @@ export MOCK=false
 
 for fytoken in ${ARBITRUM_FYTOKENS[@]}; do
     echo "fyToken: " $fytoken
-    FYTOKEN=$fytoken forge test -c contracts/test/fyToken/FYTokenFlash.t.sol
+    FYTOKEN=$fytoken ./bin/test -c contracts/test/fyToken/FYTokenFlash.t.sol
 done 

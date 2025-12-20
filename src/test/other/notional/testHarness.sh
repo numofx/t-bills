@@ -12,5 +12,5 @@ export NETWORK=TENDERLY
 export MOCK=false
 
 for join in ${JOINS[@]}; do
-  JOIN=$join forge test --match-path contracts/test/other/notional/NotionalJoinHarness.t.sol
+  JOIN=$join ./bin/test --match-path contracts/test/other/notional/NotionalJoinHarness.t.sol
 done

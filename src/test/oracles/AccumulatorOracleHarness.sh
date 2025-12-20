@@ -29,5 +29,5 @@ for base in ${!CELO_BASES[@]}; do
     ORACLE=$CELO_ORACLE \
     BASE=$(printf "%x" $base) \
     ADDRESS=${CELO_BASES[$base]} \
-    forge test -c contracts/test/oracles/AccumulatorOracle.t.sol
+    ./bin/test -c contracts/test/oracles/AccumulatorOracle.t.sol
 done 

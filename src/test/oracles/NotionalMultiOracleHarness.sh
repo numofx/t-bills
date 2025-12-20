@@ -32,5 +32,5 @@ for i in {0..2}; do
     BASE=$(printf "%x" ${CELO_BASES[$i]}) \
     QUOTE=$(printf "%x" ${CELO_FCASH[$i]}) \
     BASE_ADDRESS=${CELO_BASE_ADDRESSES[$i]} \
-    forge test -c contracts/test/oracles/NotionalMultiOracle.t.sol -m testConversionHarness
+    ./bin/test -c contracts/test/oracles/NotionalMultiOracle.t.sol -m testConversionHarness
 done 

@@ -12,5 +12,5 @@ export MOCK=false
 
 for join in ${CELO_JOINS[@]}; do
     echo "Join: " $join
-    JOIN=$join forge test --match-path contracts/test/join/FlashJoin.t.sol
+    JOIN=$join ./bin/test --match-path contracts/test/join/FlashJoin.t.sol
 done

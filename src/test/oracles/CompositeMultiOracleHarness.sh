@@ -40,7 +40,7 @@ for base in ${!CELO_BASES[@]}; do
             QUOTE=$(printf "%x" $quote) \
             BASE_ADDRESS=${CELO_BASES[$base]} \
             QUOTE_ADDRESS=${CELO_BASES[$quote]} \
-            forge test -c contracts/test/oracles/CompositeMultiOracle.t.sol -m testConversionHarness
+            ./bin/test -c contracts/test/oracles/CompositeMultiOracle.t.sol -m testConversionHarness
         fi
     done
 done 

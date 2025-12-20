@@ -23,7 +23,9 @@ jobs:
         run: forge build
 
       - name: Run tests
-        run: forge test
+        run: ./bin/test
         env:
-          ARBITRUM_RPC: $${{ secrets.ARBITRUM_RPC}}
+          ARBITRUM_RPC: ${{ secrets.ARBITRUM_RPC }}
           MAINNET_RPC: ${{ secrets.MAINNET_RPC }}
+          ETH: ${{ secrets.MAINNET_RPC }}
+          CELO: ${{ secrets.CELO_RPC }}
